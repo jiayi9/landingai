@@ -1,0 +1,56 @@
+dataset:
+  train_split_key: train
+  val_split_key: dev
+  test_split_key: dev
+
+train:
+  batch_size: 0
+  epochs: 200
+  learning_rate: 0.0001
+  previous_checkpoint:
+  validation_run_freq: 1
+  early_stop:
+    min_delta: 0.01
+    min_epochs: 40
+  auto_tuning:
+    anchors: true
+    class_weights: true
+    class_weights_method: 0
+    debug: false
+  auto_tiling:
+    tile_size: 1024
+    stride: 768
+    patch_sample_ratio: 0.8
+    information_sampling: true
+
+model:
+  avi:
+    RetinaNetOD:
+      backbone: ResNet34
+      backbone_weights: imagenet
+      output_depth: 38
+      input_shape: [null, null, null]
+      anchor_sizes: [32, 64, 128, 256, 512]
+      anchor_strides: [8, 16, 32, 64, 128]
+      anchor_ratios: [0.25, 0.5, 1, 4]
+      anchor_scales: [0.5, 1, 1.5, 2]
+      nms_threshold: 0.1
+      score_threshold: 0.3
+      class_specific_filter: false
+
+loss:
+  regression:
+    RetinaNetSmoothL1:
+      sigma: 3
+  classification:
+    RetinaNetFocal:
+      gamma: 2
+
+eval:
+  postprocessing:
+    output_type: classification
+    transforms:
+        - CustomTransform:
+              transform: custom.object_detection_to_classification.ObjectDetectionToClassification
+              params:
+                  highest_score_position: 1

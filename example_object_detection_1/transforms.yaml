@@ -1,0 +1,10 @@
+train:
+  - HorizontalFlip:
+      p: 0.5
+  - VerticalFlip:
+      p: 0.5
+  - RandomContrast:
+  - GaussianBlur:
+      p: 0.5
+
+valid:

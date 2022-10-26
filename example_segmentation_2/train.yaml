@@ -1,0 +1,60 @@
+dataset:
+  test_split_key: test
+  train_split_key: train
+  val_split_key: dev
+eval:
+  postprocessing:
+    output_type: segmentation
+  trt: null
+loss:
+  CategoricalCrossEntropy:
+    from_logits: false
+    weights:
+      - 0.6931471805599453
+      - 2.9530851793289723
+metrics:
+  - MeanIOU:
+      from_logits: false
+      ignore_zero: true
+      name: mean_iou
+      num_classes: 2
+model:
+  avi:
+    Unet:
+      activation: softmax
+      backbone_name: resnet34
+      decoder_block_type: transpose
+      encoder_weights: imagenet
+      input_shape:
+        - null
+        - null
+        - null
+      output_depth: 2
+      tiling_config:
+        perform_tiling: false
+        stride: 512
+        target_image_shape:
+          - 512
+          - 512
+        tile_size: 512
+monitor_metric:
+  val_mean_iou: max
+train:
+  auto_tiling:
+    information_based_sampling: true
+    patch_sample_ratio: 0.8
+    stride: 512
+    tile_size: 512
+    tiles_batch_size: 32
+  auto_tuning:
+    class_weights: true
+    class_weights_method: 2
+    debug: false
+  batch_size: 0
+  early_stop:
+    metric: val_loss
+    min_delta: 0
+    min_epochs: 200
+  epochs: 2000
+  learning_rate: 0.0001
+  validation_run_freq: 1

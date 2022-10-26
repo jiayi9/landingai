@@ -1,0 +1,59 @@
+dataset:
+    train_split_key: train
+    val_split_key: dev
+    test_split_key: dev
+
+train:
+    auto_tuning:
+        class_weights: true
+        class_weights_method: 2
+    batch_size: 0
+    epochs: 200
+    learning_rate: 0.0001
+    previous_checkpoint:
+    validation_run_freq: 1
+    early_stop:
+        metric: val_loss
+        min_delta: 0
+        min_epochs: 200
+    auto_tiling:
+        tile_size: 512
+        stride: 512
+        patch_sample_ratio: 0.8
+        information_sampling: true
+
+
+model:
+    avi:
+        Unet:
+            backbone_name: resnet34
+            input_shape: [null, null, null]
+            output_depth: 5
+            activation: softmax
+            encoder_weights: imagenet
+            decoder_block_type: transpose
+
+loss:
+    CategoricalCrossEntropy:
+        weights: 7
+        from_logits: False
+
+eval:
+    checkpoint_path:
+    postprocessing:
+        output_type: classification
+        transforms:
+            -   CustomTransform:
+                    transform: custom.segmentation_to_classification.SegmentationToClassification
+                    params:
+                        highest_pixel_count: 1
+
+metrics:
+    - MeanIOU:
+          num_classes: 5 # TODO: Must match output_depth
+          from_logits: False
+          ignore_zero: True
+          name: mean_iou
+
+monitor_metric:
+    val_mean_iou: max
