@@ -3,21 +3,29 @@ dataset:
   train_split_key: train
   val_split_key: dev
 eval:
-  postprocessing:
-    output_type: segmentation
-  trt: null
+#    checkpoint_path:
+    postprocessing:
+        output_type: classification
+        transforms:
+            -   CustomTransform:
+                    transform: custom.segmentation_to_classification.SegmentationToClassification
+                    params:
+                        highest_pixel_count: 1
 loss:
   CategoricalCrossEntropy:
     from_logits: false
     weights:
       - 0.6931471805599453
-      - 2.9530851793289723
+      - 6.641817714773443
+      - 4.416118221840174
+      - 6.7922406829099105
+      - 5.619616994487083
 metrics:
   - MeanIOU:
       from_logits: false
       ignore_zero: true
       name: mean_iou
-      num_classes: 2
+      num_classes: 5
 model:
   avi:
     Unet:
@@ -29,7 +37,7 @@ model:
         - null
         - null
         - null
-      output_depth: 2
+      output_depth: 5
       tiling_config:
         perform_tiling: false
         stride: 512
