@@ -1,9 +1,10 @@
 from landinglens.model_iteration.sdk import BaseTransform, DataItem
 import numpy as np
 
+
 class NoiseFilter(BaseTransform):
-      """
-      """
+    """
+    """
 
     def __init__(self, pixel_area_threshold=None, percentage_area_threshold=None, **params):
         self.pixel_area_threshold = pixel_area_threshold
@@ -19,10 +20,10 @@ class NoiseFilter(BaseTransform):
             raise ValueError("Percentage is not between 0 and 1")
 
         if self.pixel_area_threshold and not (self.pixel_area_threshold > 0) or not isinstance(self.pixel_area_threshold, int):
-             raise ValueError("Pixel value is not positive integer")
+            raise ValueError("Pixel value is not positive integer")
 
     def __call__(self, inputs: DataItem) -> DataItem:
-      """Return a new DataItem with transformed attributes. DataItem has following
+        """Return a new DataItem with transformed attributes. DataItem has following
         attributes:
 
         image - input image.
@@ -34,7 +35,7 @@ class NoiseFilter(BaseTransform):
         Returns
         -------
             A named tuple class DataItem with the modified attributes.
- """
+        """
         img_h, img_w, _ = inputs.image.shape
         total_pixels = img_h * img_w
         bboxes = inputs.bboxes
@@ -64,7 +65,7 @@ class NoiseFilter(BaseTransform):
                 new_scores = np.append(new_scores, score)
                 new_labels = np.append(new_labels, label)
             else:
-                   continue
+                continue
 
         return DataItem(
             image=inputs.image,
