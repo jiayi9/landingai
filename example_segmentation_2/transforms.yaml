@@ -1,19 +1,31 @@
 
 train:
-- RescaleWithPadding:
+- Resize:
     always_apply: false
-    height: 992
+    height: 512
     p: 1
-    padding_value: 0
-    width: 992
+    width: 1024
+- RandomBrightness:
+    always_apply: false
+    lower_limit: -0.2
+    p: 0.5
+    upper_limit: 0.2
+- GaussianBlur:
+    lower_limit: 3
+    p: 0.5
+    upper_limit: 7
+- RandomContrast:
+    always_apply: false
+    lower_limit: -0.2
+    p: 0.5
+    upper_limit: 0.2
 - HorizontalFlip:
     p: 0.5
 - VerticalFlip:
     p: 0.5
 valid:
-- RescaleWithPadding:
+- Resize:
     always_apply: false
-    height: 992
+    height: 512
     p: 1
-    padding_value: 0
-    width: 992
+    width: 1024
