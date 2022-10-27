@@ -26,7 +26,7 @@ def load_json(path):
 def generate_list(home_folder, split):
     folder = os.path.join(home_folder, split, "Images")
     image_list = list_files_recur(folder, "bmp")[1]
-    image_name_list = [Path(x).stem[25:] for x in image_list]
+    image_name_list = [Path(x).stem[50:] for x in image_list]
     return {split: image_name_list}
 
 
@@ -37,7 +37,7 @@ def save_json(target_folder, filename, contents):
         print("write json file success!")
 
 
-home_folder = r"C:\Users\kjhm285\Downloads\validation_data_set_2022_10_25-166666926923.tar\validation_data_set_2022_10_25-166666926923"
+home_folder = r"C:\Temp\Dataset_add_ok_train30_dev4-166668888979"
 
 dataset_info = dict(
     generate_list(home_folder, 'train'),
