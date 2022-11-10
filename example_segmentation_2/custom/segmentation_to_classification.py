@@ -64,11 +64,13 @@ class SegmentationToClassification(BaseTransform):
         score = float(
             counts_sorted[self.highest_score_position - 1] / np.sum(counts_sorted)
         )
-
+        mask_labels = inputs.mask_labels
+        if mask_labels is not None and len(mask_labels.shape) == 3:
+            mask_labels = mask_labels[:, :, 0]
         return DataItem(
             image=inputs.image,
             label=label,
             score=score,
             mask_scores=inputs.mask_scores,
-            mask_labels=inputs.mask_labels,
+            mask_labels=mask_labels,
         )
