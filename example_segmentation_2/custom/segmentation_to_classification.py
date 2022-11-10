@@ -3,12 +3,14 @@ import numpy as np
 
 
 class SegmentationToClassification(BaseTransform):
-    """Transforms a segmentation output into a classification output. by simply taking
+    """
+    Transforms a segmentation output into a classification output. by simply taking
     the label with more pixels in the segmentation mask.
     """
 
     def __init__(self, highest_pixel_count: int = 1, **params):
-        """Any parameters defined in yaml file will be passed to init. Store the value
+        """
+        Any parameters defined in yaml file will be passed to init. Store the value
         passed in self so you can access them in the call method.
 
         Parameters
@@ -28,7 +30,8 @@ class SegmentationToClassification(BaseTransform):
         self.highest_score_position = highest_pixel_count
 
     def __call__(self, inputs: DataItem) -> DataItem:
-        """Return a new DataItem with transformed attributes. DataItem has following
+        """
+        Return a new DataItem with transformed attributes. DataItem has following
         attributes:
 
         image - input image.
